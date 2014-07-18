@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from lib.gitdata import sha1sum
+from gitdata import sha1sum
 
 class TestSha1(unittest.TestCase):
 

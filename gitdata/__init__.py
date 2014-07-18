@@ -4,6 +4,10 @@
 import hashlib
 import os
 import argparse
+from git import git_root
+
+def gitdata_path():
+    return os.path.join(git_root(), '.gitdata')
 
 def sha1sum(content):
     return hashlib.sha1(content).hexdigest()
@@ -29,9 +33,14 @@ def commit():
     pass
 
 def add(d):
+    gitdata = open(gitdata_path(), 'w')
+
     files = get_file_list(d)
     for f in files:
-        print file_sha1sum(f), f
+        line = "{} {}\n".format(file_sha1sum(f), f)
+        gitdata.write(line)
+
+    gitdata.close()
 
 def main():
     parser = argparse.ArgumentParser()
