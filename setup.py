@@ -4,7 +4,7 @@ import os
 from setuptools import setup
 
 setup(
-    name = "git-data",
+    name = "gitdata",
     version = "0.0.1",
     author = "JuanPablo AJ",
     author_email = "jpabloaj@gmail.com",
