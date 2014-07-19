@@ -4,6 +4,8 @@
 import hashlib
 import os
 import argparse
+import subprocess
+
 from git import git_root
 
 def gitdata_path():
@@ -31,15 +33,37 @@ def get_gitdata_info():
     info = {}
 
     for line in gitdata_readlines():
-        sha1, file_path = line.replace('\n','').split(" ")
-        info[file_path] = sha1
+        line = line.replace('\n','').split(" ")
+        sha1, file_path = line[:2]
+        info[file_path] = {'sha1':sha1}
+        if len(line) == 3:
+            info[file_path]['remote'] = line[2]
 
     return info
 
+def remote_sync(cmd='push'):
+    gitdata_info = get_gitdata_info()
+
+    for file_path, info in gitdata_info.items():
+        if 'remote' in info:
+            remote = info['remote']
+            sha1 = info['sha1']
+            file_name = os.path.basename(file_path)
+            remote = "{}{}_{}".format(remote, sha1, file_name)
+
+            if cmd == 'push':
+                scp = "scp {} {}".format(file_path, remote)
+            else:
+                scp = "scp {} {}".format(remote, file_path)
+
+            print scp
+            subprocess.check_output(scp.split(" "))
+
 def status():
     """ check sha1 of file with sha1 in .gitdata """
-    for file_path, sha1 in  get_gitdata_info().items():
-        if file_sha1sum(file_path) != sha1:
+    gitdata_info = get_gitdata_info()
+    for file_path in gitdata_info.keys():
+        if file_sha1sum(file_path) != gitdata_info[file_path]['sha1']:
             print "modified:\t"+file_path
 
 def add(d):
@@ -51,13 +75,23 @@ def add(d):
         gitdata_info = {}
 
     files = get_file_list(d)
+    previous_files = gitdata_info.keys()
     for f in files:
-        gitdata_info[f] = file_sha1sum(f)
+        if f not in previous_files:
+            gitdata_info[f] = {}
+        gitdata_info[f]['sha1'] = file_sha1sum(f)
 
     gitdata = open(gitdata_path(), 'w')
     for file_path in sorted(gitdata_info.keys()):
-        sha1 = gitdata_info[file_path]
-        line = "{} {}\n".format(sha1, file_path)
+        info = gitdata_info[file_path]
+
+        sha1 = info['sha1']
+        line = "{} {}".format(sha1, file_path)
+
+        if 'remote' in info:
+            line += " {}".format(info['remote'])
+
+        line += '\n'
         gitdata.write(line)
 
     gitdata.close()
@@ -65,6 +99,8 @@ def add(d):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-a','--add', default=None)
+    parser.add_argument('-p','--push', action='store_true')
+    parser.add_argument('-u','--pull', action='store_true')
     parser.add_argument('status', nargs='?')
     args = parser.parse_args()
 
@@ -72,6 +108,10 @@ def main():
         status()
     elif args.add:
         add(args.add)
+    elif args.push:
+        remote_sync('push')
+    elif args.pull:
+        remote_sync('pull')
 
 if __name__ == '__main__':
     main()
