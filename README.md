@@ -1,5 +1,7 @@
 # git data
 
+[![Coverage Status](https://coveralls.io/repos/juanpabloaj/gitdata/badge.png?branch=master)](https://coveralls.io/r/juanpabloaj/gitdata?branch=master)
+
 ## .gitdata file
 
     SHA1 path remote_ssh
