@@ -26,7 +26,10 @@ def get_file_list(d="."):
     return file_list
 
 def gitdata_readlines():
-    return open(gitdata_path()).readlines()
+    try:
+        return open(gitdata_path()).readlines()
+    except IOError:
+        return []
 
 def get_gitdata_info():
     info = {}
