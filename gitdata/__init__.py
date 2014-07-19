@@ -66,6 +66,11 @@ def status():
         if file_sha1sum(file_path) != gitdata_info[file_path]['sha1']:
             print "modified:\t"+file_path
 
+def list_files():
+    gitdata_info = get_gitdata_info()
+    for file_path in gitdata_info.keys():
+        print file_path
+
 def add(d):
     """ add or update sha1 of files """
 
@@ -101,6 +106,7 @@ def main():
     parser.add_argument('-a','--add', default=None)
     parser.add_argument('-p','--push', action='store_true')
     parser.add_argument('-u','--pull', action='store_true')
+    parser.add_argument('-l','--list', action='store_true')
     parser.add_argument('status', nargs='?')
     args = parser.parse_args()
 
@@ -112,6 +118,8 @@ def main():
         remote_sync('push')
     elif args.pull:
         remote_sync('pull')
+    elif args.list:
+        list_files()
 
 if __name__ == '__main__':
     main()
