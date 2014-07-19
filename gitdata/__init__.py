@@ -24,9 +24,23 @@ def get_file_list(d="."):
 
     return file_list
 
+def gitdata_readlines():
+    return open(gitdata_path()).readlines()
+
+def get_gitdata_info():
+    info = {}
+
+    for line in gitdata_readlines():
+        sha1, file_path = line.replace('\n','').split(" ")
+        info[sha1] = file_path
+
+    return info
+
 def status():
-    """ check sha1 file with .gitdata file """
-    pass
+    """ check sha1 of file with sha1 in .gitdata """
+    for sha1, file_path in  get_gitdata_info().items():
+        if sha1 != file_sha1sum(file_path):
+            print file_path
 
 def commit():
     """ write .gitdata file """
@@ -45,9 +59,12 @@ def add(d):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-a','--add', default=None)
+    parser.add_argument('status', nargs='?')
     args = parser.parse_args()
 
-    if args.add:
+    if args.status:
+        status()
+    elif args.add:
         add(args.add)
 
 if __name__ == '__main__':
