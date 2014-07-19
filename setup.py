@@ -9,7 +9,11 @@ setup(
     author = "JuanPablo AJ",
     author_email = "jpabloaj@gmail.com",
     test_suite = "tests",
-    scripts=['bin/git-data'],
+    entry_points={
+        'console_scripts': [
+            'git-data=bin:main',
+        ],
+    },
     classifiers = [
         'Programming Language :: Python :: 2.7',
     ]
