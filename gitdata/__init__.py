@@ -31,17 +31,19 @@ def gitdata_readlines():
     except IOError:
         return []
 
-def get_gitdata_info():
+def gitdata_info(lines):
     info = {}
 
-    for line in gitdata_readlines():
+    for line in lines:
         line = line.replace('\n','').split(" ")
         sha1, file_path = line[:2]
         info[file_path] = {'sha1':sha1}
         if len(line) == 3:
             info[file_path]['remote'] = line[2]
-
     return info
+
+def get_gitdata_info():
+    return gitdata_info(gitdata_readlines())
 
 def remote_sync(cmd='push'):
     gitdata_info = get_gitdata_info()
