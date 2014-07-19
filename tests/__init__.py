@@ -22,3 +22,17 @@ class TestGitdata(unittest.TestCase):
         }
 
         self.assertEqual(gitdata_info(content), info)
+
+    def test_gitdata_info_one_line_with_remote(self):
+
+        content = [
+            '96e93e946f7fd810b167e34561c489ce067d7ef1 data/data2.txt ssh:server\n'
+        ]
+        info = {
+            "data/data2.txt": {
+                "sha1": "96e93e946f7fd810b167e34561c489ce067d7ef1",
+                "remote": "ssh:server",
+            }
+        }
+
+        self.assertEqual(gitdata_info(content), info)
