@@ -32,26 +32,32 @@ def get_gitdata_info():
 
     for line in gitdata_readlines():
         sha1, file_path = line.replace('\n','').split(" ")
-        info[sha1] = file_path
+        info[file_path] = sha1
 
     return info
 
 def status():
     """ check sha1 of file with sha1 in .gitdata """
-    for sha1, file_path in  get_gitdata_info().items():
-        if sha1 != file_sha1sum(file_path):
-            print file_path
-
-def commit():
-    """ write .gitdata file """
-    pass
+    for file_path, sha1 in  get_gitdata_info().items():
+        if file_sha1sum(file_path) != sha1:
+            print "modified:\t"+file_path
 
 def add(d):
-    gitdata = open(gitdata_path(), 'w')
+    """ add or update sha1 of files """
+
+    try:
+        gitdata_info = get_gitdata_info()
+    except IOError:
+        gitdata_info = {}
 
     files = get_file_list(d)
     for f in files:
-        line = "{} {}\n".format(file_sha1sum(f), f)
+        gitdata_info[f] = file_sha1sum(f)
+
+    gitdata = open(gitdata_path(), 'w')
+    for file_path in sorted(gitdata_info.keys()):
+        sha1 = gitdata_info[file_path]
+        line = "{} {}\n".format(sha1, file_path)
         gitdata.write(line)
 
     gitdata.close()
