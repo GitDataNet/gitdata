@@ -93,7 +93,6 @@ class TestGitdata(unittest.TestCase):
             }
         }
 
-        previous_files = ["data/data2.txt"]
         new_files_sha1 = {
             "data/data2.txt": "1111111111111111111111111111111111111111",
         }
@@ -110,7 +109,6 @@ class TestGitdata(unittest.TestCase):
     def test_update_gitdata_info_one_new_file(self):
         gitdata_info = {}
 
-        previous_files = []
         new_files_sha1 = {
             "data/data2.txt": "1111111111111111111111111111111111111111",
         }
