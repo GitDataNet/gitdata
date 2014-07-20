@@ -45,23 +45,30 @@ def gitdata_info(lines):
 def get_gitdata_info():
     return gitdata_info(gitdata_readlines())
 
-def remote_sync(cmd='push'):
-    gitdata_info = get_gitdata_info()
+def make_ssh_cmd(gitdata_info, cmd):
+    ssh_cmd_lines = []
 
     for file_path, info in gitdata_info.items():
         if 'remote' in info:
-            remote = info['remote']
-            sha1 = info['sha1']
+
             file_name = os.path.basename(file_path)
-            remote = "{}{}_{}".format(remote, sha1, file_name)
+            remote = "{}{}_{}".format(info['remote'], info['sha1'], file_name)
 
             if cmd == 'push':
                 scp = "scp {} {}".format(file_path, remote)
             else:
                 scp = "scp {} {}".format(remote, file_path)
 
-            print scp
-            subprocess.check_output(scp.split(" "))
+            ssh_cmd_lines.append(scp)
+
+    return ssh_cmd_lines
+
+def remote_sync(cmd='push'):
+    gitdata_info = get_gitdata_info()
+
+    for scp in make_ssh_cmd(gitdata_info, cmd):
+        print scp
+        subprocess.check_output(scp.split(" "))
 
 def status():
     """ check sha1 of file with sha1 in .gitdata """
