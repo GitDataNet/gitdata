@@ -95,10 +95,7 @@ def make_gitdata_content(gitdata_info):
 def add(d):
     """ add or update sha1 of files """
 
-    try:
-        gitdata_info = get_gitdata_info()
-    except IOError:
-        gitdata_info = {}
+    gitdata_info = get_gitdata_info()
 
     files = get_file_list(d)
     previous_files = gitdata_info.keys()
