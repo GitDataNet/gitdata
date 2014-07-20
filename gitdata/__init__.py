@@ -132,7 +132,8 @@ def make_gitdata_content(gitdata_info):
 
     return content
 
-def update_gitdata_info(gitdata_info, previous_files, new_files_sha1):
+def update_gitdata_info(gitdata_info, new_files_sha1):
+    previous_files = gitdata_info.keys()
     updated = copy.deepcopy(gitdata_info)
 
     for f in new_files_sha1.keys():
@@ -145,12 +146,9 @@ def update_gitdata_info(gitdata_info, previous_files, new_files_sha1):
 def add(d):
     """ add or update sha1 of files """
 
-    gitdata_info = get_gitdata_info()
-
     new_files_sha1 =  files_sha1sum(get_file_list(d))
-    previous_files = gitdata_info.keys()
 
-    gitdata_info = update_gitdata_info(gitdata_info, previous_files, new_files_sha1)
+    gitdata_info = update_gitdata_info(get_gitdata_info(), new_files_sha1)
 
     gitdata = open(gitdata_path(), 'w')
     gitdata.write(make_gitdata_content(gitdata_info))

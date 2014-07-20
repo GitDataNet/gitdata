@@ -105,7 +105,7 @@ class TestGitdata(unittest.TestCase):
         }
 
         self.assertEqual(updated,\
-                update_gitdata_info(gitdata_info, previous_files, new_files_sha1))
+                update_gitdata_info(gitdata_info, new_files_sha1))
 
     def test_update_gitdata_info_one_new_file(self):
         gitdata_info = {}
@@ -122,7 +122,7 @@ class TestGitdata(unittest.TestCase):
         }
 
         self.assertEqual(updated,\
-                update_gitdata_info(gitdata_info, previous_files, new_files_sha1))
+                update_gitdata_info(gitdata_info, new_files_sha1))
 
     def test_make_status_lines(self):
         gitdata_info = {
