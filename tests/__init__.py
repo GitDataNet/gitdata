@@ -7,6 +7,7 @@ from gitdata import gitdata_info
 from gitdata import make_gitdata_content
 from gitdata import make_ssh_cmd
 from gitdata import update_gitdata_info
+from gitdata import make_status_lines
 
 class TestSha1(unittest.TestCase):
 
@@ -89,6 +90,22 @@ class TestGitdata(unittest.TestCase):
 
         self.assertEqual(updated,\
                 update_gitdata_info(gitdata_info, previous_files, new_files_sha1))
+
+    def test_make_status_lines(self):
+        gitdata_info = {
+            "data/data2.txt": {
+                "sha1": "0000000000000000000000000000000000000000",
+            }
+        }
+
+        files_sha1 = {
+            "data/data2.txt": "1111111111111111111111111111111111111111",
+        }
+
+        content = 'modified:\tdata/data2.txt\n'
+
+        self.assertEqual(content,\
+            make_status_lines(gitdata_info, files_sha1))
 
 class TestSsh(unittest.TestCase):
 

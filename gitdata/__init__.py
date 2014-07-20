@@ -3,6 +3,7 @@
 
 import hashlib
 import os
+import sys
 import subprocess
 import copy
 
@@ -74,12 +75,21 @@ def remote_sync(cmd='push'):
         print scp
         subprocess.check_output(scp.split(" "))
 
+def make_status_lines(gitdata_info, files_sha1):
+    lines = ''
+
+    for file_path in gitdata_info.keys():
+        if files_sha1[file_path] != gitdata_info[file_path]['sha1']:
+            lines += "modified:\t{}\n".format(file_path)
+
+    return lines
+
 def status():
     """ check sha1 of file with sha1 in .gitdata """
     gitdata_info = get_gitdata_info()
-    for file_path in gitdata_info.keys():
-        if file_sha1sum(file_path) != gitdata_info[file_path]['sha1']:
-            print "modified:\t"+file_path
+    files_sha1 = files_sha1sum(gitdata_info.keys())
+
+    sys.stdout.write(make_status_lines(gitdata_info, files_sha1))
 
 def list_files():
     gitdata_info = get_gitdata_info()
