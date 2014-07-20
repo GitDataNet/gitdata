@@ -21,6 +21,13 @@ def file_sha1sum(filepath):
 def files_sha1sum(path_list):
     return dict( (f, file_sha1sum(f) ) for f in path_list )
 
+def remote_split(remote_str):
+    splitted = remote_str.split(':')
+    if len(splitted) == 3:
+        return ':'.join(splitted[:-1]), splitted[-1]
+
+    return remote_str
+
 def get_file_list(d="."):
 
     file_list = []
@@ -44,7 +51,11 @@ def gitdata_info(lines):
         sha1, file_path = line[:2]
         info[file_path] = {'sha1':sha1}
         if len(line) == 3:
-            info[file_path]['remote'] = line[2]
+            remote_str = remote_split(line[2])
+            info[file_path]['remote'] = remote_str
+            if len(remote_str) == 2:
+                info[file_path]['remote'] = remote_str[0]
+                info[file_path]['port'] = remote_str[1]
     return info
 
 def get_gitdata_info():
@@ -59,10 +70,14 @@ def make_ssh_cmd(gitdata_info, cmd):
             file_name = os.path.basename(file_path)
             remote = "{}{}_{}".format(info['remote'], info['sha1'], file_name)
 
+            port = ''
+            if 'port' in info.keys():
+                port = '-P {} '.format(info["port"])
+
             if cmd == 'push':
-                scp = "scp {} {}".format(file_path, remote)
+                scp = "scp {}{} {}".format(port, file_path, remote)
             else:
-                scp = "scp {} {}".format(remote, file_path)
+                scp = "scp {}{} {}".format(port, remote, file_path)
 
             ssh_cmd_lines.append(scp)
 

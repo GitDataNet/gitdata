@@ -4,12 +4,13 @@
 
 ## .gitdata file
 
-    SHA1 path remote_ssh
+    SHA1 path remote_ssh:ssh_port
 
 Example
 
-    c00214008bcd3fe1f5beccdf1a63d15b158bf0b3 data/data1.txt ssh://server:tmp/
     96e93e946f7fd810b167e34561c489ce067d7ef1 data/data2.txt
+    c00214008bcd3fe1f5beccdf1a63d15b158bf0b3 data/data1.txt user@server:tmp/
+    7a7a91f5c2b5bc1f4d294de5a6166abec5364d15 data/data0.txt user@server:tmp/:1234
 
 ## Usage
 
