@@ -2,6 +2,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/juanpabloaj/gitdata/badge.png?branch=master)](https://coveralls.io/r/juanpabloaj/gitdata?branch=master)
 
+Storage the data files (images, data test) in remote ssh servers. In git only save a register of necessary files to current commit.
+
 ## .gitdata file
 
     SHA1 path remote_ssh:ssh_port
