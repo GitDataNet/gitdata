@@ -16,7 +16,10 @@ def sha1sum(content):
     return hashlib.sha1(content).hexdigest()
 
 def file_sha1sum(filepath):
-    return sha1sum(open(filepath, 'rb').read())
+    try:
+        return sha1sum(open(filepath, 'rb').read())
+    except IOError:
+        return
 
 def files_sha1sum(path_list):
     return dict( (f, file_sha1sum(f) ) for f in path_list )
@@ -84,9 +87,7 @@ def make_ssh_cmd(gitdata_info, cmd):
     return ssh_cmd_lines
 
 def remote_sync(cmd='push'):
-    gitdata_info = get_gitdata_info()
-
-    for scp in make_ssh_cmd(gitdata_info, cmd):
+    for scp in make_ssh_cmd(get_gitdata_info(), cmd):
         print scp
         subprocess.check_output(scp.split(" "))
 
@@ -94,7 +95,10 @@ def make_status_lines(gitdata_info, files_sha1):
     lines = ''
 
     for file_path in gitdata_info.keys():
-        if files_sha1[file_path] != gitdata_info[file_path]['sha1']:
+        file_path_sha1 = files_sha1[file_path]
+        if file_path_sha1 == None:
+            lines += "deleted:\t{}\n".format(file_path)
+        elif file_path_sha1 != gitdata_info[file_path]['sha1']:
             lines += "modified:\t{}\n".format(file_path)
 
     return lines

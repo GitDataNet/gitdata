@@ -140,6 +140,23 @@ class TestGitdata(unittest.TestCase):
         self.assertEqual(content,\
             make_status_lines(gitdata_info, files_sha1))
 
+    def test_make_status_lines_sha1_none(self):
+        gitdata_info = {
+            "data/data2.txt": {
+                "sha1": "0000000000000000000000000000000000000000",
+            }
+        }
+
+        files_sha1 = {
+            "data/data2.txt": None,
+        }
+
+        content = 'deleted:\tdata/data2.txt\n'
+
+        self.assertEqual(content,\
+            make_status_lines(gitdata_info, files_sha1))
+
+
 class TestSsh(unittest.TestCase):
 
     def setUp(self):
