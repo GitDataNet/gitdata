@@ -75,6 +75,23 @@ def list_files():
     for file_path in gitdata_info.keys():
         print file_path
 
+def make_gitdata_content(gitdata_info):
+    content = ''
+
+    for file_path in sorted(gitdata_info.keys()):
+        info = gitdata_info[file_path]
+
+        sha1 = info['sha1']
+        line = "{} {}".format(sha1, file_path)
+
+        if 'remote' in info:
+            line += " {}".format(info['remote'])
+
+        line += '\n'
+        content += line
+
+    return content
+
 def add(d):
     """ add or update sha1 of files """
 
@@ -91,17 +108,6 @@ def add(d):
         gitdata_info[f]['sha1'] = file_sha1sum(f)
 
     gitdata = open(gitdata_path(), 'w')
-    for file_path in sorted(gitdata_info.keys()):
-        info = gitdata_info[file_path]
-
-        sha1 = info['sha1']
-        line = "{} {}".format(sha1, file_path)
-
-        if 'remote' in info:
-            line += " {}".format(info['remote'])
-
-        line += '\n'
-        gitdata.write(line)
-
+    gitdata.write(make_gitdata_content(gitdata_info))
     gitdata.close()
 

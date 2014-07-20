@@ -4,6 +4,7 @@ import unittest
 
 from gitdata import sha1sum
 from gitdata import gitdata_info
+from gitdata import make_gitdata_content
 
 class TestSha1(unittest.TestCase):
 
@@ -36,3 +37,15 @@ class TestGitdata(unittest.TestCase):
         }
 
         self.assertEqual(gitdata_info(content), info)
+
+    def test_make_gitdata_content(self):
+        gitdata_info = {
+            "data/data2.txt": {
+                "sha1": "96e93e946f7fd810b167e34561c489ce067d7ef1",
+                "remote": "ssh:server",
+            }
+        }
+
+        content = '96e93e946f7fd810b167e34561c489ce067d7ef1 data/data2.txt ssh:server\n'
+
+        self.assertEqual(make_gitdata_content(gitdata_info), content)
