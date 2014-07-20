@@ -73,6 +73,23 @@ class TestGitdata(unittest.TestCase):
         self.assertEqual(updated,\
                 update_gitdata_info(gitdata_info, previous_files, new_files_sha1))
 
+    def test_update_gitdata_info_one_new_file(self):
+        gitdata_info = {}
+
+        previous_files = []
+        new_files_sha1 = {
+            "data/data2.txt": "1111111111111111111111111111111111111111",
+        }
+
+        updated= {
+            "data/data2.txt": {
+                "sha1": "1111111111111111111111111111111111111111",
+            }
+        }
+
+        self.assertEqual(updated,\
+                update_gitdata_info(gitdata_info, previous_files, new_files_sha1))
+
 class TestSsh(unittest.TestCase):
 
     def setUp(self):
