@@ -6,6 +6,7 @@ from gitdata import sha1sum
 from gitdata import gitdata_info
 from gitdata import make_gitdata_content
 from gitdata import make_ssh_cmd
+from gitdata import update_gitdata_info
 
 class TestSha1(unittest.TestCase):
 
@@ -50,6 +51,27 @@ class TestGitdata(unittest.TestCase):
         content = '96e93e946f7fd810b167e34561c489ce067d7ef1 data/data2.txt ssh:server\n'
 
         self.assertEqual(make_gitdata_content(gitdata_info), content)
+
+    def test_update_gitdata_info_one_file(self):
+        gitdata_info = {
+            "data/data2.txt": {
+                "sha1": "0000000000000000000000000000000000000000",
+            }
+        }
+
+        previous_files = ["data/data2.txt"]
+        new_files_sha1 = {
+            "data/data2.txt": "1111111111111111111111111111111111111111",
+        }
+
+        updated= {
+            "data/data2.txt": {
+                "sha1": "1111111111111111111111111111111111111111",
+            }
+        }
+
+        self.assertEqual(updated,\
+                update_gitdata_info(gitdata_info, previous_files, new_files_sha1))
 
 class TestSsh(unittest.TestCase):
 

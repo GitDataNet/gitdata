@@ -4,6 +4,7 @@
 import hashlib
 import os
 import subprocess
+import copy
 
 from git import git_root
 
@@ -15,6 +16,9 @@ def sha1sum(content):
 
 def file_sha1sum(filepath):
     return sha1sum(open(filepath, 'rb').read())
+
+def files_sha1sum(path_list):
+    return dict( (f, file_sha1sum(f) ) for f in path_list )
 
 def get_file_list(d="."):
 
@@ -99,17 +103,25 @@ def make_gitdata_content(gitdata_info):
 
     return content
 
+def update_gitdata_info(gitdata_info, previous_files, new_files_sha1):
+    updated = copy.deepcopy(gitdata_info)
+
+    for f in new_files_sha1.keys():
+        if f not in previous_files:
+            updated[f] = {}
+        updated[f]['sha1'] = new_files_sha1[f]
+
+    return updated
+
 def add(d):
     """ add or update sha1 of files """
 
     gitdata_info = get_gitdata_info()
 
-    files = get_file_list(d)
+    new_files_sha1 =  files_sha1sum(get_file_list(d))
     previous_files = gitdata_info.keys()
-    for f in files:
-        if f not in previous_files:
-            gitdata_info[f] = {}
-        gitdata_info[f]['sha1'] = file_sha1sum(f)
+
+    gitdata_info = update_gitdata_info(gitdata_info, previous_files, new_files_sha1)
 
     gitdata = open(gitdata_path(), 'w')
     gitdata.write(make_gitdata_content(gitdata_info))
