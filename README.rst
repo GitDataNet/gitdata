@@ -21,6 +21,13 @@ Example::
     c00214008bcd3fe1f5beccdf1a63d15b158bf0b3 data/data1.txt user@server:tmp/
     7a7a91f5c2b5bc1f4d294de5a6166abec5364d15 data/data0.txt user@server:tmp/:1234
 
+Installation
+============
+
+::
+
+    pip install gitdata
+
 Usage
 =====
 
