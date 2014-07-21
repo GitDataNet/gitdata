@@ -16,6 +16,7 @@ setup(
     license='MIT',
     author = "JuanPablo AJ",
     author_email = "jpabloaj@gmail.com",
+    packages = ['bin', 'gitdata'],
     test_suite = "tests",
     entry_points={
         'console_scripts': [
