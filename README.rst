@@ -1,10 +1,15 @@
-# git data
+========
+git data
+========
 
-[![Coverage Status](https://coveralls.io/repos/juanpabloaj/gitdata/badge.png?branch=master)](https://coveralls.io/r/juanpabloaj/gitdata?branch=master)
+.. image:: https://coveralls.io/repos/juanpabloaj/gitdata/badge.png?branch=master
+  :target: https://coveralls.io/r/juanpabloaj/gitdata?branch=master
+
 
 Storage the data files (images, data test) in remote ssh servers. In git only save a register of necessary files to current commit.
 
-## .gitdata file
+.gitdata file
+=============
 
     SHA1 path remote_ssh:ssh_port
 
@@ -16,11 +21,11 @@ Example
 
 ## Usage
 
-Add to `.gitdata` file, [SHA-1](http://en.wikipedia.org/wiki/SHA-1) and path of files contained in the directory.
+Add to ``.gitdata`` file, `SHA-1 <http://en.wikipedia.org/wiki/SHA-1>`_ and path of files contained in the directory.
 
     git data -a directory
 
-Show modified files, files with modified `SHA-1`
+Show modified files, files with modified ``SHA-1``
 
     git data status
 
@@ -28,10 +33,10 @@ Files with ssh column are pushed to remote ssh server
 
     git data -p
 
-Files with ssh column are pulled from remote ssh server, the version download is respective to the current SHA-1 in `.gitdata` file.
+Files with ssh column are pulled from remote ssh server, the version download is respective to the current SHA-1 in ``.gitdata`` file.
 
     git data -u
 
-Show files stored in the `.gitdata` file
+Show files stored in the ``.gitdata`` file
 
     git data -l

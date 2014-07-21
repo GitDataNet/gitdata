@@ -3,10 +3,15 @@
 import os
 from setuptools import setup
 
+def read(*paths):
+    with open(os.path.join(*paths), 'r') as f:
+        return f.read()
+
 setup(
     name = "gitdata",
     version = "0.0.1",
     description = "Storage the data files in ssh servers",
+    long_description=(read('README.rst')),
     url = "https://github.com/juanpabloaj/gitdata",
     license='MIT',
     author = "JuanPablo AJ",
