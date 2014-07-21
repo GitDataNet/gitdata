@@ -9,7 +9,7 @@ def read(*paths):
 
 setup(
     name = "gitdata",
-    version = "0.0.1",
+    version = "0.0.2",
     description = "Storage the data files in ssh servers",
     long_description=(read('README.rst')),
     url = "https://github.com/juanpabloaj/gitdata",

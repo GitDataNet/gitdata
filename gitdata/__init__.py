@@ -87,6 +87,9 @@ def make_ssh_cmd(gitdata_info, cmd):
     return ssh_cmd_lines
 
 def remote_sync(cmd='push'):
+    if status() != '' and cmd == 'push':
+        return
+
     for scp in make_ssh_cmd(get_gitdata_info(), cmd):
         print scp
         subprocess.check_output(scp.split(" "))
@@ -108,7 +111,10 @@ def status():
     gitdata_info = get_gitdata_info()
     files_sha1 = files_sha1sum(gitdata_info.keys())
 
-    sys.stdout.write(make_status_lines(gitdata_info, files_sha1))
+    status_lines = make_status_lines(gitdata_info, files_sha1)
+    sys.stdout.write(status_lines)
+
+    return status_lines
 
 def list_files():
     gitdata_info = get_gitdata_info()
