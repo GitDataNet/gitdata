@@ -5,3 +5,4 @@ htmlcov
 node_modules
 Gruntfile.js
 package.json
+dist
