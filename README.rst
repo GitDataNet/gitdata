@@ -2,6 +2,8 @@
 git data
 ========
 
+.. image:: https://travis-ci.org/juanpabloaj/gitdata.svg?branch=master
+    :target: https://travis-ci.org/juanpabloaj/gitdata
 .. image:: https://coveralls.io/repos/juanpabloaj/gitdata/badge.png?branch=master
   :target: https://coveralls.io/r/juanpabloaj/gitdata?branch=master
 
