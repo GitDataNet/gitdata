@@ -25,4 +25,4 @@ class TestIO(unittest.TestCase):
 
         paths = ['files/file1.txt', 'files/file2.txt']
 
-        self.assertEqual(get_file_list(dir_name), paths)
+        self.assertEqual(sorted(get_file_list(dir_name)), sorted(paths))
