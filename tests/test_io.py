@@ -8,6 +8,7 @@ from gitdata import get_file_list
 from gitdata import file_sha1sum
 from gitdata import files_sha1sum
 
+
 class TestIO(unittest.TestCase):
 
     @classmethod
@@ -33,7 +34,10 @@ class TestIO(unittest.TestCase):
 
         file_path = os.path.join(self.files_dir, 'file1.txt')
 
-        self.assertEqual(file_sha1sum(file_path), 'ce1be0ff4065a6e9415095c95f25f47a633cef2b')
+        self.assertEqual(
+            file_sha1sum(file_path),
+            'ce1be0ff4065a6e9415095c95f25f47a633cef2b'
+        )
 
     def test_file_sha1sum_file_not_found(self):
 
@@ -45,8 +49,10 @@ class TestIO(unittest.TestCase):
 
         path_list = get_file_list(self.files_dir)
         expected = {
-            os.path.join(self.files_dir,'file1.txt'):'ce1be0ff4065a6e9415095c95f25f47a633cef2b',
-            os.path.join(self.files_dir,'file2.txt'):'c2edf7b002d0354039a8aaba3bc53180caf3d248',
+            os.path.join(self.files_dir, 'file1.txt'):
+            'ce1be0ff4065a6e9415095c95f25f47a633cef2b',
+            os.path.join(self.files_dir, 'file2.txt'):
+            'c2edf7b002d0354039a8aaba3bc53180caf3d248',
         }
 
         self.assertEqual(files_sha1sum(path_list), expected)

@@ -8,6 +8,7 @@ import subprocess
 from gitdata.git import git_root
 from gitdata import gitdata_path
 
+
 class TestGit(unittest.TestCase):
 
     @classmethod
@@ -26,4 +27,3 @@ class TestGit(unittest.TestCase):
         path = '{}/{}'.format(self.tempdir, '.gitdata')
 
         self.assertEqual(gitdata_path(), path)
-

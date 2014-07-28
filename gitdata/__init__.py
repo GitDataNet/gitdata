@@ -9,11 +9,14 @@ import copy
 
 from git import git_root
 
+
 def gitdata_path():
     return os.path.join(git_root(), '.gitdata')
 
+
 def sha1sum(content):
     return hashlib.sha1(content).hexdigest()
+
 
 def file_sha1sum(filepath):
     try:
@@ -21,8 +24,10 @@ def file_sha1sum(filepath):
     except IOError:
         return
 
+
 def files_sha1sum(path_list):
-    return dict( (f, file_sha1sum(f) ) for f in path_list )
+    return dict((f, file_sha1sum(f)) for f in path_list)
+
 
 def remote_split(remote_str):
     splitted = remote_str.split(':')
@@ -30,6 +35,7 @@ def remote_split(remote_str):
         return ':'.join(splitted[:-1]), splitted[-1]
 
     return remote_str
+
 
 def get_file_list(d="."):
 
@@ -40,19 +46,21 @@ def get_file_list(d="."):
 
     return file_list
 
+
 def gitdata_readlines():
     try:
         return open(gitdata_path()).readlines()
     except IOError:
         return []
 
+
 def gitdata_info(lines):
     info = {}
 
     for line in lines:
-        line = line.replace('\n','').split(" ")
+        line = line.replace('\n', '').split(" ")
         sha1, file_path = line[:2]
-        info[file_path] = {'sha1':sha1}
+        info[file_path] = {'sha1': sha1}
         if len(line) == 3:
             remote_str = remote_split(line[2])
             info[file_path]['remote'] = remote_str
@@ -61,8 +69,10 @@ def gitdata_info(lines):
                 info[file_path]['port'] = remote_str[1]
     return info
 
+
 def get_gitdata_info():
     return gitdata_info(gitdata_readlines())
+
 
 def make_ssh_cmd(gitdata_info, cmd):
     ssh_cmd_lines = []
@@ -86,6 +96,7 @@ def make_ssh_cmd(gitdata_info, cmd):
 
     return ssh_cmd_lines
 
+
 def remote_sync(cmd='push'):
     if status() != '' and cmd == 'push':
         return
@@ -94,17 +105,19 @@ def remote_sync(cmd='push'):
         print scp
         subprocess.check_output(scp.split(" "))
 
+
 def make_status_lines(gitdata_info, files_sha1):
     lines = ''
 
     for file_path in gitdata_info.keys():
         file_path_sha1 = files_sha1[file_path]
-        if file_path_sha1 == None:
+        if not file_path_sha1:
             lines += "deleted:\t{}\n".format(file_path)
         elif file_path_sha1 != gitdata_info[file_path]['sha1']:
             lines += "modified:\t{}\n".format(file_path)
 
     return lines
+
 
 def status():
     """ check sha1 of file with sha1 in .gitdata """
@@ -116,10 +129,12 @@ def status():
 
     return status_lines
 
+
 def list_files():
     gitdata_info = get_gitdata_info()
     for file_path in gitdata_info.keys():
         print file_path
+
 
 def make_gitdata_content(gitdata_info):
     content = ''
@@ -138,6 +153,7 @@ def make_gitdata_content(gitdata_info):
 
     return content
 
+
 def update_gitdata_info(gitdata_info, new_files_sha1):
     previous_files = gitdata_info.keys()
     updated = copy.deepcopy(gitdata_info)
@@ -149,14 +165,14 @@ def update_gitdata_info(gitdata_info, new_files_sha1):
 
     return updated
 
+
 def add(d):
     """ add or update sha1 of files """
 
-    new_files_sha1 =  files_sha1sum(get_file_list(d))
+    new_files_sha1 = files_sha1sum(get_file_list(d))
 
     gitdata_info = update_gitdata_info(get_gitdata_info(), new_files_sha1)
 
     gitdata = open(gitdata_path(), 'w')
     gitdata.write(make_gitdata_content(gitdata_info))
     gitdata.close()
-
