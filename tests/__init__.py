@@ -88,8 +88,10 @@ class TestGitdata(unittest.TestCase):
             }
         }
 
-        content = '96e93e946f7fd810b167e34561c489ce067d7ef1 '
-        + 'data/data2.txt server\n'
+        content = (
+            '96e93e946f7fd810b167e34561c489ce067d7ef1 '
+            'data/data2.txt server\n'
+        )
 
         self.assertEqual(make_gitdata_content(gitdata_info), content)
 
@@ -196,7 +198,7 @@ class TestSsh(unittest.TestCase):
 
         ssh_cmd_lines = [
             'scp data/data2.txt '
-            + 'server96e93e946f7fd810b167e34561c489ce067d7ef1_data2.txt',
+            'server96e93e946f7fd810b167e34561c489ce067d7ef1_data2.txt',
         ]
 
         self.assertEqual(make_ssh_cmd(gitdata_info, cmd), ssh_cmd_lines)
@@ -207,7 +209,7 @@ class TestSsh(unittest.TestCase):
 
         ssh_cmd_lines = [
             'scp server96e93e946f7fd810b167e34561c489ce067d7ef1_data2.txt '
-            + 'data/data2.txt'
+            'data/data2.txt'
         ]
 
         self.assertEqual(make_ssh_cmd(gitdata_info, cmd), ssh_cmd_lines)
@@ -218,7 +220,7 @@ class TestSsh(unittest.TestCase):
 
         ssh_cmd_lines = [
             'scp -P 8080 data/data2.txt '
-            + 'u@s:tmp/96e93e946f7fd810b167e34561c489ce067d7ef1_data2.txt',
+            'u@s:tmp/96e93e946f7fd810b167e34561c489ce067d7ef1_data2.txt',
         ]
 
         self.assertEqual(make_ssh_cmd(gitdata_info, cmd), ssh_cmd_lines)
@@ -229,8 +231,8 @@ class TestSsh(unittest.TestCase):
 
         ssh_cmd_lines = [
             'scp -P 8080 '
-            + 'u@s:tmp/96e93e946f7fd810b167e34561c489ce067d7ef1_data2.txt '
-            + 'data/data2.txt'
+            'u@s:tmp/96e93e946f7fd810b167e34561c489ce067d7ef1_data2.txt '
+            'data/data2.txt'
         ]
 
         self.assertEqual(make_ssh_cmd(gitdata_info, cmd), ssh_cmd_lines)
