@@ -28,7 +28,7 @@ class TestIO(unittest.TestCase):
 
         paths = ['files/file1.txt', 'files/file2.txt']
 
-        self.assertEqual(sorted(get_file_list(self.dir_name)), sorted(paths))
+        self.assertItemsEqual(get_file_list(self.dir_name), paths)
 
     def test_file_sha1sum(self):
 
